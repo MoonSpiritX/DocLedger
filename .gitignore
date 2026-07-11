@@ -21,3 +21,8 @@ publish_tmp/
 # OS files
 Thumbs.db
 .DS_Store
+
+# Release packages
+*.zip
+*.7z
+*.rar
