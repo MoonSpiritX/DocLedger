@@ -117,6 +117,9 @@ public class LedgerWriter
             // 克隆模板整行（含全部 Cell），保留边框/字体/背景色/对齐等原始格式
             var newRow = (Row)templateRow.CloneNode(true);
             newRow.RowIndex = newIdx;
+            // 清除固定行高，交给 Excel 根据内容自动计算
+            newRow.CustomHeight = false;
+            newRow.Height = null;
 
             // 按列号索引克隆行中的单元格
             var rowCellsByCol = new Dictionary<int, Cell>();
@@ -143,6 +146,9 @@ public class LedgerWriter
                     cell.RemoveAllChildren();
                     cell.CellValue = null;
                     cell.DataType = null;
+
+                    // 保留模板样式（边框/字体/背景色等），仅增加自动换行
+                    cell.StyleIndex = EnsureWrapCellStyle(wbPart, cell.StyleIndex ?? 0);
 
                     if (!string.IsNullOrEmpty(val))
                     {
@@ -232,6 +238,38 @@ public class LedgerWriter
         centerWrapStyleIdx = (uint)(ss.CellFormats.Count! - 1);
 
         ss.Save();
+    }
+
+    /// <summary>
+    /// 在保留原样式所有格式（边框/字体/背景色等）的基础上，增加自动换行+垂直居中。
+    /// 如果原样式已有自动换行，直接返回原索引，不创建重复样式。
+    /// </summary>
+    private static uint EnsureWrapCellStyle(WorkbookPart wbPart, uint sourceStyleIndex)
+    {
+        var stylesPart = wbPart.GetPartsOfType<WorkbookStylesPart>().FirstOrDefault();
+        if (stylesPart?.Stylesheet?.CellFormats == null)
+            return sourceStyleIndex;
+        var cellFormats = stylesPart.Stylesheet.CellFormats;
+        var sourceCf = cellFormats.ElementAtOrDefault((int)sourceStyleIndex) as CellFormat;
+        if (sourceCf == null)
+            return sourceStyleIndex;
+
+        // 原样式已有自动换行，无需创建新样式
+        if (sourceCf.Alignment?.WrapText?.Value == true)
+            return sourceStyleIndex;
+
+        // 克隆原样式并添加自动换行 + 垂直居中
+        var newCf = (CellFormat)sourceCf.CloneNode(true)!;
+        if (newCf.Alignment == null)
+            newCf.Alignment = new Alignment();
+        newCf.Alignment.WrapText = true;
+        newCf.Alignment.Vertical = VerticalAlignmentValues.Center;
+        newCf.ApplyAlignment = true;
+
+        cellFormats.AppendChild(newCf);
+        uint newIdx = (uint)(cellFormats.Count! - 1);
+        stylesPart.Stylesheet.Save();
+        return newIdx;
     }
 
     private static string GetColumnLetter(int col)

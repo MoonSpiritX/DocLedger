@@ -33,6 +33,10 @@
     <Compile Remove="文件台账工具Ava.Tests\**\*.axaml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="DocLedger_v1.0_win-x64.zip" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<TrimmerRootAssembly Include="Avalonia.Base" />
 		<TrimmerRootAssembly Include="Avalonia.Controls" />
