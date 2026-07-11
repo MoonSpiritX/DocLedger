@@ -1,0 +1,241 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="文件台账工具Ava.App"
+             xmlns:local="using:文件台账工具Ava"
+             xmlns:doc="using:Ava.Logic.OfficialDocument"
+             RequestedThemeVariant="Default">
+
+  <Application.Resources>
+    <ResourceDictionary>
+
+      <!-- ═══════ 暗色 / 亮色 主题资源 ═══════ -->
+      <ResourceDictionary.ThemeDictionaries>
+
+        <!-- 暗色 -->
+        <ResourceDictionary x:Key="Dark">
+          <Color x:Key="PrimaryColor">#4A9AF5</Color>
+          <Color x:Key="PrimaryColorHover">#6AB0FF</Color>
+          <Color x:Key="SuccessColor">#66BB6A</Color>
+          <Color x:Key="WarningColor">#FFA726</Color>
+          <Color x:Key="DangerColor">#EF5350</Color>
+          <Color x:Key="DangerColorHover">#FF6B6B</Color>
+
+          <LinearGradientBrush x:Key="WindowBackground" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#0F1923"/>
+            <GradientStop Offset="0.5" Color="#162232"/>
+            <GradientStop Offset="1.0" Color="#1C2D42"/>
+          </LinearGradientBrush>
+
+          <SolidColorBrush x:Key="CardBackground" Color="#A0FFFFFF"/>
+          <SolidColorBrush x:Key="CardBackgroundHover" Color="#B8FFFFFF"/>
+          <SolidColorBrush x:Key="CardBorder" Color="#50FFFFFF"/>
+          <SolidColorBrush x:Key="CardHeaderBackground" Color="#80FFFFFF"/>
+
+          <SolidColorBrush x:Key="InputBackground" Color="#60FFFFFF"/>
+          <SolidColorBrush x:Key="InputBorder" Color="#40FFFFFF"/>
+          <SolidColorBrush x:Key="InputBorderHover" Color="#884A9AF5"/>
+          <SolidColorBrush x:Key="InputBorderFocused" Color="#CC4A9AF5"/>
+          <SolidColorBrush x:Key="InputPlaceholderForeground" Color="#70FFFFFF"/>
+
+          <!-- 覆盖 FluentTheme TextBox 模板内部资源键 -->
+          <SolidColorBrush x:Key="TextControlBorderBrush" Color="#40FFFFFF"/>
+          <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#884A9AF5"/>
+          <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#CC4A9AF5"/>
+          <Thickness x:Key="TextControlBorderThemeThicknessFocused">1</Thickness>
+
+          <SolidColorBrush x:Key="TextPrimary" Color="#EDFFFFFF"/>
+          <SolidColorBrush x:Key="TextSecondary" Color="#AAFFFFFF"/>
+          <SolidColorBrush x:Key="TextTertiary" Color="#66FFFFFF"/>
+          <SolidColorBrush x:Key="TextAccent" Color="#4A9AF5"/>
+          <SolidColorBrush x:Key="TextSuccess" Color="#66BB6A"/>
+
+          <SolidColorBrush x:Key="ButtonPrimaryBg" Color="#CC4A9AF5"/>
+          <SolidColorBrush x:Key="ButtonPrimaryBgHover" Color="#E64A9AF5"/>
+          <SolidColorBrush x:Key="ButtonPrimaryBgDisabled" Color="#334A9AF5"/>
+
+          <SolidColorBrush x:Key="ButtonSecondaryBg" Color="#0AFFFFFF"/>
+          <SolidColorBrush x:Key="ButtonSecondaryBgHover" Color="#14FFFFFF"/>
+          <SolidColorBrush x:Key="ButtonSecondaryBorder" Color="#2FFFFFFF"/>
+          <SolidColorBrush x:Key="ButtonSecondaryText" Color="#DDFFFFFF"/>
+
+          <SolidColorBrush x:Key="ListRowBorder" Color="#14FFFFFF"/>
+          <SolidColorBrush x:Key="ListRowHover" Color="#0AFFFFFF"/>
+        </ResourceDictionary>
+
+        <!-- 亮色 -->
+        <ResourceDictionary x:Key="Light">
+          <Color x:Key="PrimaryColor">#1A73E8</Color>
+          <Color x:Key="PrimaryColorHover">#4791F0</Color>
+          <Color x:Key="SuccessColor">#2E7D32</Color>
+          <Color x:Key="WarningColor">#E65100</Color>
+          <Color x:Key="DangerColor">#C62828</Color>
+          <Color x:Key="DangerColorHover">#E53935</Color>
+
+          <LinearGradientBrush x:Key="WindowBackground" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#E0E6F0"/>
+            <GradientStop Offset="0.5" Color="#EAF0F8"/>
+            <GradientStop Offset="1.0" Color="#F0F4FA"/>
+          </LinearGradientBrush>
+
+          <SolidColorBrush x:Key="CardBackground" Color="#C8FFFFFF"/>
+          <SolidColorBrush x:Key="CardBackgroundHover" Color="#F8FFFFFF"/>
+          <SolidColorBrush x:Key="CardBorder" Color="#30000000"/>
+          <SolidColorBrush x:Key="CardHeaderBackground" Color="#08000000"/>
+
+          <SolidColorBrush x:Key="InputBackground" Color="#E8FFFFFF"/>
+          <SolidColorBrush x:Key="InputBorder" Color="#28000000"/>
+          <SolidColorBrush x:Key="InputBorderHover" Color="#881A73E8"/>
+          <SolidColorBrush x:Key="InputBorderFocused" Color="#CC1A73E8"/>
+          <SolidColorBrush x:Key="InputPlaceholderForeground" Color="#66000000"/>
+
+          <!-- 覆盖 FluentTheme TextBox 模板内部资源键 -->
+          <SolidColorBrush x:Key="TextControlBorderBrush" Color="#28000000"/>
+          <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#881A73E8"/>
+          <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#CC1A73E8"/>
+          <Thickness x:Key="TextControlBorderThemeThicknessFocused">1</Thickness>
+
+          <SolidColorBrush x:Key="TextPrimary" Color="#DE000000"/>
+          <SolidColorBrush x:Key="TextSecondary" Color="#89000000"/>
+          <SolidColorBrush x:Key="TextTertiary" Color="#4D000000"/>
+          <SolidColorBrush x:Key="TextAccent" Color="#1A73E8"/>
+          <SolidColorBrush x:Key="TextSuccess" Color="#2E7D32"/>
+
+          <SolidColorBrush x:Key="ButtonPrimaryBg" Color="#CC1A73E8"/>
+          <SolidColorBrush x:Key="ButtonPrimaryBgHover" Color="#E61A73E8"/>
+          <SolidColorBrush x:Key="ButtonPrimaryBgDisabled" Color="#331A73E8"/>
+
+          <SolidColorBrush x:Key="ButtonSecondaryBg" Color="#F8FFFFFF"/>
+          <SolidColorBrush x:Key="ButtonSecondaryBgHover" Color="#F0FFFFFF"/>
+          <SolidColorBrush x:Key="ButtonSecondaryBorder" Color="#30000000"/>
+          <SolidColorBrush x:Key="ButtonSecondaryText" Color="#C0000000"/>
+
+          <SolidColorBrush x:Key="ListRowBorder" Color="#16000000"/>
+          <SolidColorBrush x:Key="ListRowHover" Color="#08000000"/>
+        </ResourceDictionary>
+
+      </ResourceDictionary.ThemeDictionaries>
+
+      <!-- ═══════ 全局共享资源（转换器） ═══════ -->
+      <doc:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
+      <doc:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.DataTemplates>
+    <local:ViewLocator/>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <!-- ═══════ 全局样式 ═══════ -->
+
+    <!-- 卡片容器 -->
+    <Style Selector="Border.Card">
+      <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorder}"/>
+      <Setter Property="BorderThickness" Value="0.5"/>
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="Padding" Value="16"/>
+    </Style>
+
+    <!-- 卡片表头 -->
+    <Style Selector="Border.CardHeader">
+      <Setter Property="Background" Value="{DynamicResource CardHeaderBackground}"/>
+      <Setter Property="BorderThickness" Value="0,0,0,0"/>
+      <Setter Property="Padding" Value="12,10"/>
+    </Style>
+
+    <!-- 主操作按钮 -->
+    <Style Selector="Button.Primary">
+      <Setter Property="Background" Value="{DynamicResource ButtonPrimaryBg}"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="FontWeight" Value="500"/>
+      <Setter Property="Padding" Value="16,9"/>
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style Selector="Button.Primary:pointerover">
+      <Setter Property="Background" Value="{DynamicResource ButtonPrimaryBgHover}"/>
+    </Style>
+    <Style Selector="Button.Primary:disabled">
+      <Setter Property="Background" Value="{DynamicResource ButtonPrimaryBgDisabled}"/>
+    </Style>
+
+    <!-- 次要按钮 -->
+    <Style Selector="Button.Secondary">
+      <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBg}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ButtonSecondaryText}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource ButtonSecondaryBorder}"/>
+      <Setter Property="BorderThickness" Value="0.5"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Padding" Value="14,5"/>
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style Selector="Button.Secondary:pointerover">
+      <Setter Property="Background" Value="{DynamicResource ButtonSecondaryBgHover}"/>
+    </Style>
+
+    <!-- 危险按钮（删除） -->
+    <Style Selector="Button.Danger">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextTertiary}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="CornerRadius" Value="4"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Height" Value="22"/>
+      <Setter Property="Width" Value="22"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style Selector="Button.Danger:pointerover">
+      <Setter Property="Foreground" Value="{DynamicResource DangerColor}"/>
+    </Style>
+
+    <!-- TextBox 输入框 -->
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource InputBorder}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="Padding" Value="10,7"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+      <Setter Property="PlaceholderForeground" Value="{DynamicResource InputPlaceholderForeground}"/>
+      <Style Selector="^:pointerover">
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
+      </Style>
+      <Style Selector="^:focus">
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderFocused}"/>
+      </Style>
+    </Style>
+
+    <!-- 区域标题 -->
+    <Style Selector="TextBlock.SectionTitle">
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="FontWeight" Value="500"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextAccent}"/>
+    </Style>
+
+    <!-- 辅助提示 -->
+    <Style Selector="TextBlock.Hint">
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextTertiary}"/>
+    </Style>
+
+    <!-- 列表表头 -->
+    <Style Selector="TextBlock.ColumnHeader">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontWeight" Value="500"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+    </Style>
+
+  </Application.Styles>
+
+</Application>

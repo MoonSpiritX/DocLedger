@@ -1,0 +1,100 @@
+# 顶级 EditorConfig
+root = true
+
+# 所有文件
+[*]
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = crlf
+
+# XML / XAML / csproj
+[*.{xml,axaml,xaml,csproj,props,targets}]
+indent_size = 2
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+
+# Shell / Python（跨平台脚本）
+[*.{sh,py}]
+end_of_line = lf
+
+# JSON
+[*.json]
+indent_size = 2
+
+# ──────────────── C# 专用 ────────────────
+
+[*.cs]
+# using 排序
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
+
+# 花括号
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_before_members_in_object_initializers = true
+
+# 缩进
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+
+# 空格
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+
+# 表达式主体
+csharp_style_expression_bodied_methods = false
+csharp_style_expression_bodied_properties = true
+csharp_style_expression_bodied_indexers = true
+csharp_style_expression_bodied_accessors = true
+csharp_style_expression_bodied_lambdas = true
+
+# 命名风格（公共成员 PascalCase）
+dotnet_naming_rule.public_members_should_be_pascalcase.severity = suggestion
+dotnet_naming_rule.public_members_should_be_pascalcase.symbols = public_symbols
+dotnet_naming_rule.public_members_should_be_pascalcase.style = pascal_case
+
+dotnet_naming_symbols.public_symbols.applicable_kinds = method, property, event, class, struct, interface, enum, delegate
+dotnet_naming_symbols.public_symbols.applicable_accessibilities = public, internal
+
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+# 私有字段使用 _camelCase
+dotnet_naming_rule.private_fields_should_be_camelcase.severity = suggestion
+dotnet_naming_rule.private_fields_should_be_camelcase.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_camelcase.style = camel_case_with_underscore
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.camel_case_with_underscore.capitalization = camel_case
+dotnet_naming_style.camel_case_with_underscore.required_prefix = _
+
+# 接口以 I 开头
+dotnet_naming_rule.interface_should_be_iprefixed.severity = suggestion
+dotnet_naming_rule.interface_should_be_iprefixed.symbols = interface_types
+dotnet_naming_rule.interface_should_be_iprefixed.style = iprefixed_style
+
+dotnet_naming_symbols.interface_types.applicable_kinds = interface
+
+dotnet_naming_style.iprefixed_style.capitalization = pascal_case
+dotnet_naming_style.iprefixed_style.required_prefix = I
+
+# 类型参数以 T 开头
+dotnet_naming_rule.type_parameters_should_be_tprefixed.severity = suggestion
+dotnet_naming_rule.type_parameters_should_be_tprefixed.symbols = type_parameters
+dotnet_naming_rule.type_parameters_should_be_tprefixed.style = tprefixed_style
+
+dotnet_naming_symbols.type_parameters.applicable_kinds = type_parameter
+
+dotnet_naming_style.tprefixed_style.capitalization = pascal_case
+dotnet_naming_style.tprefixed_style.required_prefix = T

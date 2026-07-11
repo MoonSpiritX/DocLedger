@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="文件台账工具Ava.csproj" />
+  <Project Path="文件台账工具Ava.Tests\文件台账工具Ava.Tests.csproj" />
+</Solution>

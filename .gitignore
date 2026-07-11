@@ -1,0 +1,23 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# Build output
+publish_tmp/
+*.nupkg
+
+# WorkBuddy dev tools
+.workbuddy/
+
+# OS files
+Thumbs.db
+.DS_Store

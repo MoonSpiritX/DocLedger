@@ -1,0 +1,241 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Ava.Logic.OfficialDocument"
+             x:Class="Ava.Logic.OfficialDocument.MappingPanel"
+             x:DataType="vm:MappingPanelViewModel">
+
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Margin="16"
+        Background="Transparent"
+        PointerPressed="OnRootPointerPressed">
+
+    <!-- ═══════ Row 0：文件选择 ═══════ -->
+    <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="0,0,0,10">
+
+      <!-- 目标模版文件 -->
+      <Border Grid.Column="0" Margin="0,0,6,0"
+              Classes="Card"
+              Name="TargetDropBorder">
+        <StackPanel Spacing="8">
+          <TextBlock Text="目标台账、统计表模版文件" Classes="SectionTitle"/>
+          <TextBlock Classes="Hint">
+            <Run Text="支持拖放 / 粘贴 "/>
+            <Run Text=".docx / .xlsx"
+                 Foreground="{DynamicResource TextTertiary}"/>
+          </TextBlock>
+          <TextBox PlaceholderText="粘贴文件或拖拽文件至此..."
+                   Name="TargetPathBox"/>
+          <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="8">
+            <Button Classes="Secondary"
+                    Command="{Binding BrowseTargetCommand}">浏览</Button>
+            <Button Grid.Column="1" Classes="Secondary"
+                    Command="{Binding RemoveTargetFileCommand}">移出文件</Button>
+            <TextBlock Grid.Column="2" FontSize="12" VerticalAlignment="Center"
+                       Text="{Binding TargetDisplayName}"
+                       IsVisible="{Binding TargetDisplayName, Converter={StaticResource StringNotEmptyConverter}}"
+                       Foreground="{DynamicResource TextSuccess}"
+                       Margin="8,0,0,0"
+                       TextTrimming="CharacterEllipsis"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- 公文文件夹 -->
+      <Border Grid.Column="1" Margin="6,0,0,0"
+              Classes="Card"
+              Name="FolderDropBorder">
+        <StackPanel Spacing="8">
+          <TextBlock Text="公文文件夹" Classes="SectionTitle"/>
+          <TextBlock Text="支持拖放 / 粘贴多个文件夹" Classes="Hint"/>
+          <TextBox PlaceholderText="粘贴文件夹路径，按回车添加..."
+                   Name="FolderPathBox"/>
+          <Grid ColumnDefinitions="Auto,Auto,Auto" ColumnSpacing="8">
+            <Button Classes="Secondary"
+                    Command="{Binding BrowseFolderCommand}">浏览</Button>
+            <Button Grid.Column="1" Classes="Secondary"
+                    Command="{Binding ClearListCommand}">清空列表</Button>
+            <TextBlock Grid.Column="2" FontSize="12" VerticalAlignment="Center"
+                       Foreground="{DynamicResource TextSuccess}"
+                       IsVisible="{Binding FolderCount, Converter={StaticResource GreaterThanZeroConverter}}"
+                       Text="{Binding FolderCount, StringFormat={}已添加{0}个文件夹}"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+    </Grid>
+
+    <!-- ═══════ Row 1：文件夹列表 ═══════ -->
+    <Border Grid.Row="1" Margin="0,0,0,10" Padding="0"
+            Classes="Card"
+            Height="200">
+      <Grid RowDefinitions="Auto,*">
+        <Border Grid.Row="0" Classes="CardHeader">
+          <Grid ColumnDefinitions="50,1.5*,1.5*,1*,36">
+            <TextBlock Grid.Column="0" Text="序号" Classes="ColumnHeader"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="文件夹名" Classes="ColumnHeader"/>
+            <TextBlock Grid.Column="2" Text="公文名" Classes="ColumnHeader"
+                       IsVisible="{Binding HasResult}"/>
+            <TextBlock Grid.Column="3" Text="附件数" Classes="ColumnHeader"
+                       IsVisible="{Binding HasResult}"
+                       HorizontalAlignment="Center"/>
+          </Grid>
+        </Border>
+        <ScrollViewer Grid.Row="1">
+          <ItemsControl ItemsSource="{Binding SourceFolderItems}"
+                        BorderThickness="0" Background="Transparent">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:SourceFolderItem">
+                <Border Padding="12,8"
+                        BorderBrush="{DynamicResource ListRowBorder}"
+                        BorderThickness="0,0,0,0.5">
+                  <Grid ColumnDefinitions="50,1.5*,1.5*,1*,36">
+                    <TextBlock Grid.Column="0" Text="{Binding Index}" FontSize="12"
+                               Foreground="{DynamicResource TextSecondary}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding FolderName}" FontSize="12"
+                               Foreground="{DynamicResource TextPrimary}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding DocumentName}" FontSize="12"
+                               Foreground="{DynamicResource TextSecondary}"
+                               IsVisible="{Binding HasScanned}"/>
+                    <TextBlock Grid.Column="3" Text="{Binding AttachmentCount}" FontSize="12"
+                               Foreground="{DynamicResource TextSecondary}"
+                               IsVisible="{Binding HasScanned}"
+                               HorizontalAlignment="Center"/>
+                    <Button Grid.Column="4" Width="22" Height="22" Padding="0"
+                            FontSize="11"
+                            Command="{Binding $parent[UserControl].DataContext.RemoveFolderCommand}"
+                            CommandParameter="{Binding FolderPath}"
+                            Classes="Danger"
+                            Content="✕"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </Grid>
+    </Border>
+
+    <!-- ═══════ Row 2：文号前缀管理 ═══════ -->
+    <Border Grid.Row="2" Margin="0,0,0,10" Padding="14"
+            Classes="Card">
+      <StackPanel Spacing="8">
+        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+          <TextBlock Text="文号前缀配置" Classes="SectionTitle" VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                     Text="输入前缀和单位，程序据此识别文号（长期保存）"
+                     Classes="Hint" VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="2" Margin="8,0,0,0" FontSize="11" VerticalAlignment="Center"
+                     Foreground="{DynamicResource TextAccent}"
+                     Text="{Binding ScanStatus}"
+                     IsVisible="{Binding ScanStatus, Converter={StaticResource StringNotEmptyConverter}}"/>
+          <Button Grid.Column="3" Margin="10,0,0,0" Classes="Secondary"
+                  Command="{Binding AddPrefixRowCommand}">+ 添加行</Button>
+        </Grid>
+
+        <!-- 前缀表格：表头 -->
+        <Border Classes="CardHeader">
+          <Grid ColumnDefinitions="36,1.5*,1.5*,32">
+            <TextBlock Grid.Column="0" Text="#" Classes="ColumnHeader"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="文号前缀" Classes="ColumnHeader"/>
+            <TextBlock Grid.Column="2" Text="发文/发往单位" Classes="ColumnHeader"/>
+          </Grid>
+        </Border>
+
+        <!-- 前缀表格：数据行 -->
+        <ScrollViewer Height="188">
+          <ItemsControl ItemsSource="{Binding DocNumberPrefixes}"
+                        BorderThickness="0" Background="Transparent">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:DocNumberPrefixItem">
+                <Border Padding="6,2" Margin="0,0,0,1"
+                        BorderBrush="{DynamicResource ListRowBorder}"
+                        BorderThickness="0,0,0,0.5">
+                  <Grid ColumnDefinitions="36,1.5*,1.5*,32" VerticalAlignment="Center">
+                    <TextBlock Grid.Column="0" Text="{Binding Index}" FontSize="11"
+                               Foreground="{DynamicResource TextSecondary}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding Prefix}" FontSize="11" Padding="4,2"
+                             VerticalContentAlignment="Center"
+                             PlaceholderText="如 实际使用的文号"/>
+                    <TextBox Grid.Column="2" Text="{Binding UnitName}" FontSize="11" Padding="4,2"
+                             VerticalContentAlignment="Center"
+                             PlaceholderText="如 银河系安全局"/>
+                    <Button Grid.Column="3"
+                            Command="{Binding $parent[UserControl].DataContext.RemovePrefixRowCommand}"
+                            CommandParameter="{Binding}"
+                            Classes="Danger"
+                            Content="✕"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </StackPanel>
+    </Border>
+
+    <!-- ═══════ Row 3：操作按钮行 + 状态信息 ═══════ -->
+    <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,0,0,4">
+
+      <!-- 状态信息（左） -->
+      <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12"
+                  VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="12"
+                    IsVisible="{Binding HasResult}">
+          <StackPanel Orientation="Horizontal" Spacing="4">
+            <TextBlock Text="文件夹：" FontSize="11"
+                       Foreground="{DynamicResource TextSecondary}"/>
+            <TextBlock Text="{Binding FolderCount}" FontSize="11" FontWeight="500"
+                       Foreground="{DynamicResource TextPrimary}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="4">
+            <TextBlock Text="公文：" FontSize="11"
+                       Foreground="{DynamicResource TextSecondary}"/>
+            <TextBlock Text="{Binding DocumentCount}" FontSize="11" FontWeight="500"
+                       Foreground="{DynamicResource TextPrimary}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="4">
+            <TextBlock Text="文号：" FontSize="11"
+                       Foreground="{DynamicResource TextSecondary}"/>
+            <TextBlock Text="{Binding NumberCount}" FontSize="11" FontWeight="500"
+                       Foreground="{DynamicResource TextPrimary}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="4">
+            <TextBlock Text="未匹配列：" FontSize="11"
+                       Foreground="{DynamicResource TextSecondary}"/>
+            <TextBlock Text="{Binding UnmatchedColumnCount}" FontSize="11" FontWeight="500"
+                       Foreground="{DynamicResource WarningColor}"/>
+          </StackPanel>
+        </StackPanel>
+      </StackPanel>
+
+      <!-- 操作（右） -->
+      <CheckBox Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center"
+                IsChecked="{Binding AppendMode}"
+                Content="追加模式"
+                FontSize="12"
+                Foreground="{DynamicResource TextSecondary}"/>
+
+      <Button Grid.Column="2"
+              Classes="Primary"
+              Command="{Binding FillCommand}"
+              IsEnabled="{Binding CanFill}">开始生成</Button>
+    </Grid>
+
+    <!-- ═══════ Toast 通知（浮动于所有内容之上） ═══════ -->
+    <Border Grid.RowSpan="5"
+            IsVisible="{Binding ToastMessage, Converter={StaticResource StringNotEmptyConverter}}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Margin="0,0,0,36"
+            Background="#E0000000"
+            CornerRadius="8"
+            Padding="20,10"
+            ZIndex="100">
+      <TextBlock Text="{Binding ToastMessage}"
+                 Foreground="White" FontSize="13"/>
+    </Border>
+
+  </Grid>
+</UserControl>

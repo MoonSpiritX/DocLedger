@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:文件台账工具Ava.ViewModels"
+        xmlns:doc="using:Ava.Logic.OfficialDocument"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="860" d:DesignHeight="650"
+        x:Class="文件台账工具Ava.Views.MainWindow"
+        Title="公文台账工具Ava"
+        Width="860"
+        MinWidth="600" MinHeight="729"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Height"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent">
+  <Panel>
+    <!-- 半透明背景覆盖层：同时让 Acrylic 透出来 -->
+    <Border Background="{DynamicResource WindowBackground}" Opacity="0.55"/>
+    <doc:MappingPanel/>
+  </Panel>
+</Window>
