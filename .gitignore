@@ -15,9 +15,6 @@ obj/
 publish_tmp/
 *.nupkg
 
-# WorkBuddy dev tools
-.workbuddy/
-
 # OS files
 Thumbs.db
 .DS_Store
